@@ -467,7 +467,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Year Wise Placements'
+            text: 'Year/Campus Wise Placements'
         },
         subtitle: {
             text: ''
@@ -502,13 +502,26 @@ $(function () {
         series: [{
             name: "Year",
             colorByPoint: true,
-            data: [<?php foreach ($yearWiseData as $key) {
-                  echo json_encode($key);
+            data: [<?php 
+            	$count=0;
+            	foreach ($yearWiseData as $key) {
+                  	echo json_encode($key);
+            		if($count<1){
+            			echo ',';
+            			$count++;	
+            		}
             } ?>]
         }],
         drilldown: {
-            series: [<?php foreach ($campusYearWiseSeries as $key) {
+            series: [<?php 
+            $count=0;
+            foreach ($campusYearWiseSeries as $key) {
                   echo json_encode($key);
+
+                     if($count<1){
+            			echo ',';
+            			$count++;	
+            		}
             } ?>]
         }
     });

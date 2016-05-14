@@ -37,39 +37,32 @@
 							 $arrayCount = count($allDataInSheet);
 							 for($i=1; $i<=$arrayCount; $i++){
 								 if( !empty($allDataInSheet[$i]["A"])){
-									 $rollno = $allDataInSheet[$i]["A"];
-									 $query = "UPDATE attendance SET `status` = '1' WHERE `Rollno` = '$rollno' AND `company_id` = '$company'";
-									 
-									 if($query_run = mysqli_query($connect , $query)){
-                    $query = "SELECT `Count` FROM `record` WHERE `Rollno` = '$rollno'";
-                    $query_run = mysqli_query($connect , $query);
-                     if(mysqli_num_rows($query_run)>0){
-                        $c = mysqli_fetch_assoc($query_run);
-                        $q_update = "UPDATE record SET `Count` = '".$c['Count']+1."' WHERE `Rollno` = '$rollno'";
-                        $res_update = mysqli_query($connect , $q_update);
-                        $_SESSION['message']="Results have been uploaded";
-
-                     }else{
-                        $q = "Select `rollno` FROM `students` WHERE `rollno` = '$rollno'";
-                        $q_check = mysqli_query($connect , $q);
-                        if(mysqli_num_rows($q_check)>0){
-                          $q_insert = "INSERT INTO `record`(`Rollno` , `Count`) VALUES('$rollno' , 1)";
-                          $res_insert = mysqli_query($connect , $q_insert);
-                          if($res_insert){
-                              $_SESSION['message']="Results have been uploaded";
-                          }
-                        }
-                        else{
-                              $_SESSION['message']="$rollno doesnot exist in records";
-                        }
-                     }
-
-
-										
-										/*if(mysqli_affected_rows($connect) == 0){
-											$noSubmission[] = $rollno;
-										}	*/
-									}
+										$rollno = $allDataInSheet[$i]["A"];
+										$query = "UPDATE attendance SET `status` = '1' WHERE `Rollno` = '$rollno' AND `company_id` = '$company'";
+								 		if($query_run = mysqli_query($connect , $query)){
+						                    $query = "SELECT `Count` FROM `record` WHERE `Rollno` = '$rollno'";
+						                    $query_run = mysqli_query($connect , $query);
+						                     if(mysqli_num_rows($query_run)>0){
+						                       	$c = mysqli_fetch_assoc($query_run);
+						                       	$countNew= $c['Count']+1;
+						            			$q_update = "UPDATE record SET `Count` = '".$countNew."' WHERE `Rollno` = '$rollno'";
+						                        $res_update = mysqli_query($connect , $q_update);
+						                        $_SESSION['message']="Results have been uploaded";
+						                     }else{
+						                        $q = "Select `rollno` FROM `students` WHERE `rollno` = '$rollno'";
+						                        $q_check = mysqli_query($connect , $q);
+						                        if(mysqli_num_rows($q_check)>0){
+						                          $q_insert = "INSERT INTO `record`(`Rollno` , `Count`) VALUES('$rollno' , 1)";
+						                          $res_insert = mysqli_query($connect , $q_insert);
+						                          if($res_insert){
+						                              $_SESSION['message']="Results have been uploaded";
+						                          }
+						                        }
+						                        else{
+						                              $_SESSION['message']="$rollno doesnot exist in records";
+						                        }
+						                    }
+										}
 								}
 							 }
 							/* if(count($noSubmission)){
@@ -230,7 +223,21 @@
 						<div class="form-panel">
             <h4 class="mb"><i class="fa fa-angle-right"></i> Company Details</h4>
             <form class="form-horizontal style-form" method="post" enctype="multipart/form-data" action="uploadresults.php">
-              <div class="form-group">
+            <!--   <div class="form-group">
+                              <label class="col-sm-3 col-sm-3 control-label">Year</label>
+                              <div class="col-sm-8">
+                                  <select class="form-control" name = "year" id="year"  required="required">
+                                    
+                                     <?php
+                                               $d = date('Y');
+                                               $d1 = $d-1;
+                                               echo '<option value ="'.$d1.'" id="Y'.$d1.'">'.$d1.'</option>';
+                                               echo '<option value ="'.$d.'" id="Y'.$d.'">'.$d.'</option>';
+                                       ?>
+                                  </select>
+                              </div>
+                          </div> -->
+             <div class="form-group">
                               <label class="col-sm-3 col-sm-3 control-label">Company Name</label>
                               <div class="col-sm-8">
                                   <select class="form-control" name = "company" id="company"  required="required">
