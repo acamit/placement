@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 14, 2016 at 12:47 PM
+-- Generation Time: May 14, 2016 at 01:57 PM
 -- Server version: 10.1.11-MariaDB
 -- PHP Version: 7.0.3
 
@@ -115,7 +115,6 @@ CREATE TABLE `batches` (
 --
 
 INSERT INTO `batches` (`id`, `current_batch`) VALUES
-(0, '2015'),
 (1, '2015');
 
 -- --------------------------------------------------------
@@ -141,11 +140,11 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`id`, `company_name`, `year`, `start_date`, `end_date`, `classesAllowed`, `CTC`, `status`, `url`) VALUES
-(1, 'Paxcel Technologies', 2015, '2015-09-18', '2015-09-20', 'B.Tech CSE|B.Tech ECE|B.Tech CE|M.Tech(SS)|M.C.A(FYIC)|M.C.A(TYC)|M.C.A(SS)', '4.2', 0, 'http://google.co.in'),
+(1, 'Paxcel Technologies', 2016, '2015-09-18', '2015-09-20', 'B.Tech CSE|B.Tech ECE|B.Tech CE|M.Tech(SS)|M.C.A(FYIC)|M.C.A(TYC)|M.C.A(SS)', '4.2', 0, 'http://google.co.in'),
 (2, 'TEST TRY RUN', 2015, '2015-09-18', '2015-09-22', 'B.Tech CSE|B.Tech ECE|B.Tech CE|M.Tech(SS)|M.C.A(FYIC)|M.C.A(TYC)|M.C.A(SS)', '4.2', 0, ''),
 (3, 'Code Brews', 2015, '2015-10-08', '2015-10-08', 'B.Tech CSE|B.Tech ECE|B.Tech CE|M.C.A(FYIC)|M.C.A(TYC)|M.C.A(SS)', '3.5', 0, ''),
 (4, 'RED LIZARD STUDIOS', 2015, '2015-10-20', '2015-10-20', 'B.Tech CSE|B.Tech ECE', '2.8', 0, ''),
-(5, 'test', 2015, '2016-02-24', '2016-02-25', 'B.Tech CSE|B.Tech ECE|B.Tech CE|M.Tech(SS)', '4.2', 1, '');
+(5, 'test', 2015, '2016-02-24', '2016-02-25', 'B.Tech CSE|B.Tech ECE|B.Tech CE|M.Tech(SS)', '4.2', 0, '');
 
 -- --------------------------------------------------------
 
@@ -191,7 +190,8 @@ INSERT INTO `record` (`id`, `RollNo`, `Count`) VALUES
 (3, '2011CSC1053', 1),
 (4, '2011CSC1085', 1),
 (5, '2012CSA1772', 1),
-(6, '2012CSA1714', 1);
+(6, '2012CSA1714', 1),
+(7, '1011', 5);
 
 -- --------------------------------------------------------
 
@@ -1892,7 +1892,7 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT for table `record`
 --
 ALTER TABLE `record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
