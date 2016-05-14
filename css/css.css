@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'Raleway-ExtraLight';
+  font-style: normal;
+  font-weight: 200;
+  src: local('Raleway ExtraLight'), local('Raleway-ExtraLight'), url(../fonts/Raleway-ExtraLight.woff) format('woff');
+}
+
+
+
+body{
+background-color:teal;
+}
+
+.box {
+position:absolute;
+left:0%;
+top:25%;
+width:100%;
+height:250px;
+background-color:rgba(255,255,255,0.95);
+text-align:center;
+padding-left:20px;
+}
+
+.text{
+font-family: 'Raleway-ExtraLight';
+font-size:23px;
+color:gray;
+text-align:left;
+margin-left:40%;
+}
+
+.inline{
+display:inline;
+margin-right:5%;
+}
+
+.inline + form.inline {
+margin-left:10%;
+}
+
+div.error{
+font-family: 'Raleway-ExtraLight';
+font-size:25px;
+color:red;
+padding-top:5%;
+}
+
+.text.last {
+font-size:30px;
+margin-left:35%;
+padding-top:5%;
+}
+
+#hidden{
+display:none;
+}

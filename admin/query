@@ -1,0 +1,8 @@
+/*SELECT NO OF PLACED STUDENTS BATCH WISE COURSE WISE*/
+SELECT COUNT(`record`.`Rollno`) ,`students`.`campus` , `students`.`batch` FROM `record` , `students` WHERE `record`.`RollNo`=`students`.`rollno` GROUP BY `students`.`campus` , `students`.`batch`
+
+
+
+/*SELECT TOTAL NUMBER OF STUDENTS BATCH WISE COURSE WISE who appeared*/
+
+SELECT COUNT(attendance.Rollno) ,students.campus , students.batch FROM (SELECT DISTINCT ROllno FROM attendance) attendance , students WHERE attendance.Rollno=students.rollno GROUP BY students.campus , students.batch
