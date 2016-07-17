@@ -131,6 +131,7 @@ session_start();
                   <div class="col-lg-9 main-chart">
 						<div id="containerChart" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
 						<div id="containerChart1" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+						<div id="containerChart2" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
 		
                   </div><!-- /col-lg-9 END SECTION MIDDLE -->
                   
@@ -249,128 +250,9 @@ session_start();
     <!--common script for all pages-->
     <script src="../assets/js/common-scripts.js"></script>
 
-/*fetch data to use in graphs*/
-<?php
-    $q = "SELECT `companies`.`id` , `companies`.`company_name` , count(`Rollno`) AS 'Appeared' FROM `companies` ,`attendance` WHERE `companies`.`id` = `attendance`.`company_id` GROUP BY `companies`.`id`";
-                         // $q = "SELECT `id` , `company_name` FROM `companies`  WHERE `year` = '".CURRENT_BATCH."' ";
-                          $res = mysqli_query($connect , $q);
-                         // echo "error = " . mysqli_error($connect);
-                          if(mysqli_num_rows($res)>0){
-                            while($row = mysqli_fetch_assoc($res)){
-                             
-                              $list[] = $row;
-                            }
-                          }
-
-
-                          foreach ($list as $key) {
-                            
-                              $q = "SELECT count(Rollno) as 'Placed' FROM `attendance`  WHERE `status` = '1' AND `company_id`= $key[id] ";
-                              $res = mysqli_query($connect , $q);
-                           //  echo "error = " . mysqli_error($connect);
-                              if(mysqli_num_rows($res)>0){
-                                while($row = mysqli_fetch_assoc($res)){
-                                  $list1[] = $row['Placed'];
-                                }
-                              }else{
-                                  $list1[] = 0;
-                              }
-                          }
-
-
-/*
-*
-*ChART 2
-**/
-
-    $years = array();
-    $yearWiseData = array();
-    $campus = array();
-    $campusYearWiseSeries = array();
-
-    $q = "SELECT DISTINCT(`year`) as year FROM `companies`";
-    $res = mysqli_query($connect , $q);
-    if(mysqli_num_rows($res)>0){
-      while ($row = mysqli_fetch_assoc($res)) {
-         $years[]= $row['year'];
-          
-      }
-    }
-
-
-    $q = "SELECT DISTINCT(`campus`) as campus FROM `students`";
-    $res = mysqli_query($connect , $q);
-    if(mysqli_num_rows($res)>0){
-      while ($row = mysqli_fetch_assoc($res)) {
-         $campus[]= $row['campus'];
-      }
-    }
-
-    $yearWiseObj = new stdClass();
-    $campusYearWiseObj = new stdClass();
-  foreach ($years as $year) {
-        $yearWiseObj->name = $year;
-        $yearWiseObj->drilldown = $year;
-        
-        $q = "SELECT count(`record`.`RollNo`) as placed FROM `record`,`students` WHERE `record`.`RollNo`=`students`.`rollno` AND `students`.`batch`=$year";
-        $res = mysqli_query($connect , $q);
-
-        $q1 = "SELECT count(`rollno`) as total FROM `students` WHERE `batch`=$year";
-        $res1 = mysqli_query($connect , $q1);
-
-        if(mysqli_num_rows($res)>0 && mysqli_num_rows($res1)>0 ){
-          $row = mysqli_fetch_assoc($res);
-          $row1 = mysqli_fetch_assoc($res1);
-         
-              $placed=intval($row['placed']);
-              $total = intval($row1['total']);
-              
-              if($total>0){
-                $percent=$placed/$total;
-              }else{
-                $percent =0;
-               }
-
-              $yearWiseObj->y=$percent;
-        }
-        $yearWiseData[] = $yearWiseObj;
-
-
-        $campusYearWiseObj->name=$year;
-        $campusYearWiseObj->id=$year;
-        $campusYearWiseObj->data = array();
-        foreach ($campus as $keyCampus) {
-
-          $q = "SELECT count(`record`.`RollNo`) as placed FROM `record`,`students` WHERE `record`.`RollNo`=`students`.`rollno` AND `students`.`batch`=$year AND `students`.`campus`='$keyCampus'";
-          $res = mysqli_query($connect , $q);
-
-          $q1 = "SELECT count(`rollno`) as total FROM `students` WHERE `batch`=$year AND `students`.`campus`= '$keyCampus'";
-          $res1 = mysqli_query($connect , $q1);
-          if(mysqli_num_rows($res)>0 && mysqli_num_rows($res1)>0 ){
-            $row = mysqli_fetch_assoc($res);
-            $row1 = mysqli_fetch_assoc($res1);
-           
-                $placedCampus =intval($row['placed']);
-                $totalCampus = intval($row1['total']);
-                
-                if($totalCampus>0){
-                  $percentCampus=$placedCampus/$totalCampus;
-                }else{
-                  $percentCampus =0;
-                }
-
-                $campusYearWiseObj->data[] = array(
-                  $keyCampus , $percentCampus
-                  );
-          }
-        }
-        $campusYearWiseSeries[] = $campusYearWiseObj;
-    }
-?>
-
+<?php include('graphData.php');?>
   <script>
-  
-		$(function () {
+$(function () {
     $('#containerChart').highcharts({
         chart: {
             type: 'bar'
@@ -504,9 +386,10 @@ $(function () {
             colorByPoint: true,
             data: [<?php 
             	$count=0;
+              $c = count($yearWiseData);
             	foreach ($yearWiseData as $key) {
                   	echo json_encode($key);
-            		if($count<1){
+            		if($count<$c){
             			echo ',';
             			$count++;	
             		}
@@ -515,13 +398,82 @@ $(function () {
         drilldown: {
             series: [<?php 
             $count=0;
+            $c = count($campusYearWiseSeries);
             foreach ($campusYearWiseSeries as $key) {
                   echo json_encode($key);
+                  if($count<$c){
+            			   echo ',';
+            			}
+                $count++; 
+            } ?>]
+        }
+    });
+});
 
-                     if($count<1){
+$(function () {
+    // Create the chart
+    $('#containerChart2').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Year/Course Wise Placements'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            type: 'year'
+        },
+        yAxis: {
+            title: {
+                text: 'Total no of students placed.'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.4f}%'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.4f}%</b> of total<br/>'
+        },
+
+        series: [{
+            name: "Year",
+            colorByPoint: true,
+            data: [<?php 
+            	$count=0;
+              $c = count($yearWiseData);
+            	foreach ($yearWiseData as $key) {
+                  	echo json_encode($key);
+            		if($count<$c){
             			echo ',';
-            			$count++;	
+            			
             		}
+                $count++; 
+            } ?>]
+        }],
+        drilldown: {
+            series: [<?php 
+            $count=0;
+            $c = count($courseYearWiseSeries);
+            foreach ($courseYearWiseSeries as $key) {
+                  echo json_encode($key);
+                     if($count<$c){
+            			echo ',';
+                }
+            			$count++;	
             } ?>]
         }
     });
