@@ -252,6 +252,7 @@ session_start();
 
 <?php include('graphData.php');?>
   <script>
+  
 $(function () {
     $('#containerChart').highcharts({
         chart: {
@@ -266,14 +267,15 @@ $(function () {
         xAxis: {
             categories: [
              <?php
+             if(isset($list) && count($list)>0){
               $count = 0;
-              foreach ($list as $key) {
+              foreach($list as $key) {
                   $count++;
                   if($count<count(($list)))
                       echo "'$key[company_name]' , ";
                   else
                       echo "'$key[company_name]'";
-
+            }
              }?>
             ],
             title: {
@@ -317,26 +319,28 @@ $(function () {
         series: [{
             name: 'Appeared',
             data: [<?php
-              $count = 0;
-              foreach ($list as $key) {
-                  $count++;
-                  if($count<count(($list)))
-                      echo "$key[Appeared] , ";
-                  else
-                      echo "$key[Appeared]";
-
+              if(isset($list) && count($list)>0){
+                $count = 0;
+                foreach ($list as $key) {
+                    $count++;
+                    if($count<count(($list)))
+                        echo "$key[Appeared] , ";
+                    else
+                        echo "$key[Appeared]";
+              }
              }?>]
         }, {
             name: 'Placed',
             data: [<?php
-              $count = 0;
-              foreach ($list1 as $key) {
-                  $count++;
-                  if($count<count(($list1)))
-                      echo "$key , ";
-                  else
-                      echo "$key";
-
+              if(isset($list) && count($list)>0){
+                $count = 0;
+                foreach ($list1 as $key) {
+                    $count++;
+                    if($count<count(($list1)))
+                        echo "$key , ";
+                    else
+                        echo "$key";
+              }
              }?>]
         }]
     });
@@ -384,19 +388,24 @@ $(function () {
         series: [{
             name: "Year",
             colorByPoint: true,
-            data: [<?php 
+            data: [<?php
+            if(isset($yearWiseData) && count($yearWiseData)>0){
             	$count=0;
               $c = count($yearWiseData);
+
             	foreach ($yearWiseData as $key) {
                   	echo json_encode($key);
             		if($count<$c){
             			echo ',';
             			$count++;	
             		}
-            } ?>]
+              }
+            }
+             ?>]
         }],
         drilldown: {
             series: [<?php 
+            if(isset($campusYearWiseSeries) && count($campusYearWiseSeries)>0){
             $count=0;
             $c = count($campusYearWiseSeries);
             foreach ($campusYearWiseSeries as $key) {
@@ -405,6 +414,7 @@ $(function () {
             			   echo ',';
             			}
                 $count++; 
+              }
             } ?>]
         }
     });
@@ -453,7 +463,8 @@ $(function () {
             name: "Year",
             colorByPoint: true,
             data: [<?php 
-            	$count=0;
+            	if(isset($yearWiseData) && count($yearWiseData)>0){
+            $count=0;
               $c = count($yearWiseData);
             	foreach ($yearWiseData as $key) {
                   	echo json_encode($key);
@@ -462,10 +473,12 @@ $(function () {
             			
             		}
                 $count++; 
+            }
             } ?>]
         }],
         drilldown: {
             series: [<?php 
+            if(isset($courseYearWiseSeries) && count($courseYearWiseSeries)>0){
             $count=0;
             $c = count($courseYearWiseSeries);
             foreach ($courseYearWiseSeries as $key) {
@@ -474,7 +487,8 @@ $(function () {
             			echo ',';
                 }
             			$count++;	
-            } ?>]
+            } 
+          }?>]
         }
     });
 });
