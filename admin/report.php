@@ -1,6 +1,5 @@
 <?php
-session_start();
-  if(isset($_SESSION['isLogin']) && $_SESSION['isLogin']==1){
+ob_start();
 	require_once('../server/connect.inc.php');
 	require('graphData.php');
 	require('../include/fpdf.php');
@@ -30,10 +29,8 @@ session_start();
 
 	$pdf->FancyTable($headerCourse , $courseWiseArr);
 
-	//$pdf->Output('D' , 'report.pdf');
-	$pdf->Output();
-	 }else{
-    /*echo $_SESSION['isLogin'];*/
-    header('Location: index.php');
-  }
+	$pdf->Output('D' , '' , true);
+
+	ob_end_flush();
+	//$pdf->Output();
 ?>

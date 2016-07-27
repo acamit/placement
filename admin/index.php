@@ -16,6 +16,7 @@
 				$res =mysqli_fetch_assoc($query);
 				$_SESSION['username'] = $res['username'];
 				$_SESSION['name'] = $res['name'];
+				$_SESSION['id'] = $res['id'];
 				$_SESSION['isLogin'] = 1;
 				header('Location: startTest.php');
 			}

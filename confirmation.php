@@ -23,24 +23,41 @@ if(isset($_POST['roll_num'])){
 ?>
 
 	<body>
+	<link rel="stylesheet" href="css/loader.css">
 		<div class = "box"><br/>
-			<div class = "text"> Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?php echo $name;?> </div>
-			<div class = "text"> Class &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?php echo $course; ?> </div>
-			<div class = "text"> Rollno &nbsp;&nbsp;&nbsp;&nbsp;: <?php echo $roll_num;?> </div>
-			<div class = "text"> Campus : <?php echo $campus; ?></div><br/><br/>
-			
-			
-				<a href="index.php" class="btn btn-default">Re Enter..</a>
-			
-			
-			<form action = "thanks.php" method = "POST" class = "inline">
-				<input id = "hidden" name = "roll_num" value = "<?php echo $roll_num; ?>">
-				<button type="submit" class="btn btn-default">Confirm..</button>
-			</form>
-			
-			
+
+			<div>
+				<div class = "text"> Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?php echo $name;?> </div>
+				<div class = "text"> Class &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <?php echo $course; ?> </div>
+				<div class = "text"> Rollno &nbsp;&nbsp;&nbsp;&nbsp;: <?php echo $roll_num;?> </div>
+				<div class = "text"> Campus : <?php echo $campus; ?></div>
+			</div>
+
+			<br/><br/>
+			<div id =  "container">
+
+				<a href="index.php" class="btn btn-default" onclick="disablebutton()" >Re Enter..</a>
+				
+				
+				<form action = "thanks.php" method = "POST" class = "inline">
+					<input id = "hidden" name = "roll_num" value = "<?php echo $roll_num; ?>">
+					<button type="submit" id = "button" class="btn btn-default" onclick="disablebutton()">Confirm..</button>
+				</form>
+				
+			</div>
+			<div class="loading-pulse"></div>
 		</div>
-		
+		<script type="text/javascript">
+
+		 function disablebutton(){
+		 	
+		 		document.getElementById("button").disabled = "true";
+		 		document.getElementById("container").style.display = "none";
+		 		document.querySelector(".loading-pulse").style.display = "block";
+		 	
+		 }
+			 
+		</script>
 	</body>
 	
 </html>
@@ -56,7 +73,7 @@ if(isset($_POST['roll_num'])){
 			Please try entering email or Phone Number. <br/>
 			If problem persists contact Placement Department for further queries.
 			<br/>
-			<a href="registeration.php">Retry</a>
+			<a href="index.php">Retry</a>
 		</div>
 	</body>
 </html>

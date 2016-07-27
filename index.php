@@ -2,7 +2,9 @@
 require_once 'include/header.inc.php';
 require 'server/connect.inc.php';
 
-/*if(!isset($_SESSION['registered'])){ */
+
+
+if(!isset($_SESSION['registered'])){ 
 	if(isset($_SERVER['HTTP_CLIENT_IP'])){
 		$http_client_ip = $_SERVER['HTTP_CLIENT_IP'];
 	}
@@ -38,6 +40,7 @@ endif;
 
 	
 	<body>
+	<link rel="stylesheet" href="css/loader.css">
 		<div class = "box" >
 			<div class="page-header">
 				<?php if(!empty($company)){?>
@@ -49,38 +52,54 @@ endif;
 			</div>
 			<?php if(!empty($company)){ ?>
 			<div>
-				<form action = "confirmation.php" method = "POST" class = "form-inline">			
+				<form action = "confirmation.php" method = "POST" id = "container" class = "form-inline">			
 					<div class="form-group">
 						<label for="">University Roll Number</label><br>
-						<input type="text" class="form-control" name = "roll_num" id="" placeholder="Enter Roll Number" required = "required">
+						<input type="text" class="form-control" name = "roll_num" id="roll_num" placeholder="Enter Roll Number" required = "required">
 					</div><br><br>
-					<button type="submit" class="btn btn-default">Register</button>
+					<button type="submit" class="btn btn-default" id = "button" onclick="disablebutton()">Register</button>
 				</form>
+				<br/>
+				<div class="loading-pulse"></div>
+
 			</div>
 		</div>
 	<?php }
-
-
-/*}else{*/
+}else{
 	?>
-	<!-- <div class = "box" >
-			<div class="page-header">
-					<h3>Sorry! You cannot register again.</h3>
-				
-
-			</div> -->
-<?php 
-	}else{ ?>
-		 <div class = "box" >
+	 <div class = "box" >
 			<div class="page-header">
 					<h3>404! Page not found</h3>
 				
 
 			</div> 
+<?php
+	} 
+	  }else{ ?>
+		  <div class = "box" >
+			<div class="page-header">
+					<h3>Sorry! You cannot register again.</h3>
+				
+
+			</div>
 	<?php 
 }
 
 ?>
+
+<script type="text/javascript">
+
+ function disablebutton(){
+ 	var roll_num = document.getElementById('roll_num').value;
+
+ 	if(roll_num != ""){
+ 		document.getElementById("button").disabled = "true";
+ 		document.getElementById("container").style.display = "none";
+ 		document.querySelector(".loading-pulse").style.display = "block";
+ 	}
+ }
+	 
+</script>
 	</body>
 
 </html>
